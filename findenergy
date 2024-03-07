@@ -1,0 +1,82 @@
+#!/usr/bin/perl -w
+use strict;
+use warnings;
+
+use CGI qw(:standard);
+
+my $particle = param("particle");
+my $charge = param("charge");
+my $frequency = param("frequency");
+my $nmrtable_data = "/usr/local/lib/nmrtable_data";
+my $energy;
+
+# Constants
+my $M_zero 		= 	1876.5592;
+
+sub calculate_frequency {
+	# sort passed in variables into new names
+	my ($calc_particle, $calc_charge, $calc_frequency) = @_;
+	# strip the + from the charge state as passed in, to match nmrtable_data file
+	$calc_charge = substr($calc_charge, 1);
+	# open the nmrtable_data file for reading
+	open (file_handle, "<$nmrtable_data") or die qq(Unable to open "$nmrtable_data");
+	# iterate through the file line by line
+	foreach (<file_handle>) {
+		# split each line into elements of the array @line so that we can search
+		# for the charge state only in the correct field.
+		my @line = split ' ', $_;
+		# iterate through the line and fine the one that matches both the
+		# selected particle and charge state.
+		foreach (@line) {
+			if (($_ =~ /$calc_particle/) and ($line[2] == $calc_charge)){
+				# extract the mass from the second field
+				my $mass = $line[1];
+				# extract the magnet constant from the 3rd field
+				my $magnet_k = $line[3];
+				# Calculate the particle energy.  This equation was solved using
+				# the equation from the original fortran code as a starting
+				# point.  
+				$energy = ($M_zero / 2) * ( - $mass + sqrt($mass**2 + (4*$magnet_k*$calc_charge**2*$calc_frequency**2)/($M_zero)));
+				# return the calculated particle energy
+				return $energy;
+			}
+		}
+	}
+}
+
+print header, start_html(-title=>"EAL Energy Calculator",
+		author=>"leblanc\@ohio.edu");
+print '<STYLE type="text/css">';
+print ' H1.myclass {border-with: 1; border: solid; test-align: right;}';
+print '</STYLE>';
+print '<H1>EAL Energy Calculator</H1>';
+print p("Energy Equation is:");
+print '<img src="/energy_equation.png" alt="Mathematic equation to find energy from NMR Frequency">';
+
+
+if ($frequency eq "") {
+	print hr, start_form;
+	print p("Please select particle: ", popup_menu("particle",
+			['PROTONS','DEUTERONS','HELIUM-3','ALPHAS',
+			'LITHIUM-6','LITHIUM-7','BORON-10','BORON-11',
+			'CARBON-12','CARBON-13','NITROGEN-14',
+			'NITROGEN-15','OXYGEN-16','ALUMINUM-27']));
+	print p("Please select charge state: ", popup_menu("charge",
+			['+1','+2','+3','+4','+5','+6','+7','+8']));
+	print p("Please enter NMR Value (in MHz): ",textfield("frequency",""));
+	print p(submit("Calculate"), reset("Clear"));
+	print end_form, hr;
+} else {
+	print hr, start_form,p;
+	$energy = calculate_frequency($particle, $charge, $frequency);
+    print "<TABLE>";
+	$particle = ucfirst lc $particle;
+	print "<TR><TH>Particle:<TD><big><b><font size=+1 color=#0000ff>$particle</font></b></big></TR>";
+	print "<TR><TH>Charge State:<TD><big><b><font size +1 color=#0000ff>$charge</font></b></big></TR>";
+	print "<TR><TH>Energy (MeV):<TD><b><font size=+1 color=#0000ff>";
+	printf "\%.5f", $energy;
+	print "</font> </b></TR></TABLE>";
+	print p(defaults("Continue"));
+	print end_form;
+	$frequency = undef();
+}
