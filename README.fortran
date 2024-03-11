@@ -1,0 +1,36 @@
+
+This version of NMRTABLE was imported from the IBM 370 system (ACCEL0, 
+as NMRTABLE pFOTRAN J) with it's input file(s).  No changes were made
+to the FORTRAN version.
+
+The C version is intended to be a C language equivalent runnable from
+netscape or a similar web browser program.
+
+To run the FORTRAN program, place whatever input file you want in the file
+fort.1 and execute nmrtable.  The output will be in fort.3.  The exact
+format can be found in the source, but basically the format is isotope
+name, mass, charge state(+), magnet k, minimum energy and maximum energy.
+
+Numbers were checked against the printed output used to set the 
+magnet from years past.  Almost all the checked numbers matched exactly
+for the FORTRAN and C versions.  One check point differed in the last
+decimal place by 1.
+
+The C version takes parameters isotope, chargestate, and energy.  It
+returns a string printable as HTML output.
+
+The main web interface is /var/www/cgi-bin/nmrcalc.  This perl script
+calls /usr/local/bin/nmrtable to make the calculations.  The program
+also requires /usr/local/lib/nmrtable_data for mass and energy range
+information.  (The energy range is left over from the IBM FORTRAN version
+and can probably be deleted, although it can serve as a sanity check on
+the input.)
+
+Additional nuclei must be listed is /usr/local/lib/nmrtable_data *AND*
+in the selector list field in /var/www/cgi-bin/nmrcalc.
+
+Currently, the nmrtable program writes a log entry for each call in
+/usr/tmp/nmrcalc_log to allow the return values to be checked 'offline'
+later for errors.  This can be removed later.
+
+					/JEO, August 2001
