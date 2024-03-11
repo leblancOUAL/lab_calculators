@@ -2,10 +2,8 @@
 
 use strict;
 use warnings;
-# use LWP;
 use Math::BigFloat;
 
-my $nmrtable_data = "/usr/local/lib/nmrtable_data";
 my $fortran_data = "fort.3";
 my $start_string = "1ENERGY";
 my $header = "";
