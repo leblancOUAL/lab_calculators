@@ -1,0 +1,83 @@
+# List of licensed OUAL accelerator operators used in the tandem header page
+# Enter one name per line (only)
+# Lines starting with # are ignored.
+# Other information can be added after the name but will be ignored
+# Leave "-other-" for operators not on the list yet, please.
+--other--
+#
+# Some names are commented out even though they are (still) licensed
+# operators in order to save space.  
+#
+# The list does not need to be in order (it will be sorted by perl).
+# Brient
+Brune
+Carter
+Ingram Tritium_authorized
+LeBlanc
+Massey Tritium_authorized
+# Grimes
+# Matei
+# Hornish
+Voinov
+# O'Donnell Tritium_authorized
+# Pokhrel
+# Aderemi
+# Heinen
+# Hespy
+# Oginni
+# Sayre
+# DiLullo
+# Cooper
+# Braid
+Parker
+# Dhakal
+# Akhtar
+# Ramirez
+# Byun
+# Added September 2012
+# Karki
+# Richard
+# Ray_J
+# Adams
+# Watts
+# Added July 2014
+# Wang
+# Alanazi
+# Overton
+# Carroll
+# Pun
+# Giri
+#added Feb 2015
+# Zella_L
+# Abujeib_H
+# Wang_Y
+# Burgad
+# Feathers
+# Danley
+Paneru
+Brandenburg
+# Chen
+Browne
+# added June 2017
+Meisel
+# Fisher
+Soltesz
+Subedi
+Warren
+# Reedy
+# Steinberg
+# Diwanji
+Kenady
+Jones-Alberty
+Sultana
+# added 27 Jun 2019
+Ickes
+Gaytan
+Conaway
+Derkin
+# added 13 July 2020
+Gula
+Mansi
+Nisha
+# added 18 April 2023
+Bikash
