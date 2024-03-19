@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 use strict;
 use warnings;
 
@@ -54,6 +54,7 @@ print p("Energy Equation is:");
 print '<img src="/energy_equation.png" alt="Mathematic equation to find energy from NMR Frequency">';
 
 
+no warnings 'uninitialized';
 if ($frequency eq "") {
 	print hr, start_form;
 	print p("Please select particle: ", popup_menu("particle",
@@ -73,10 +74,11 @@ if ($frequency eq "") {
 	$particle = ucfirst lc $particle;
 	print "<TR><TH>Particle:<TD><big><b><font size=+1 color=#0000ff>$particle</font></b></big></TR>";
 	print "<TR><TH>Charge State:<TD><big><b><font size +1 color=#0000ff>$charge</font></b></big></TR>";
-	print "<TR><TH>Energy (MeV):<TD><b><font size=+1 color=#0000ff>";
+	print "<TR><TH>Energy (MeV):<TD id=\"energy\"><b><font size=+1 color=#0000ff>";
 	printf "\%.5f", $energy;
 	print "</font> </b></TR></TABLE>";
 	print p(defaults("Continue"));
 	print end_form;
 	$frequency = undef();
 }
+use warnings 'uninitialized';
