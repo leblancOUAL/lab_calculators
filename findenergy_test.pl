@@ -1,8 +1,9 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
 use warnings;
 use Math::BigFloat;
+use HTML::TokeParser;
 
 my $fortran_data = "fort.3";
 my $start_string = "1ENERGY";
@@ -21,6 +22,8 @@ my $calc_frequency = "";
 my $passed_checks = 0;
 my $failed_checks = 0;
 my $total_checks = 0;
+my $script = "/var/www/cgi-bin/findenergy";
+my $scriptoutput = "";
 
 # Constants
 my $M_zero 		= 	1876.5592;
@@ -61,10 +64,28 @@ foreach (<file_handle>) {
                 # @nmrdata[$index] = $header_split[$index+1];
                 $calc_frequency = $header_split[$index+1];
                 $table_energy = sprintf("%.3f", $energy + $index/1000);
-                # Since there are 500 frequencies to check per page of output,
-                # calling the CGI script would take excessively long.  Instead, we
-                # will test by comparing the energy calculated by findenergy with
-                # the corresponding NMR value.
+
+                # # call the CGI script (path in header) using this particle,
+                # # frequency, and charge.  Stick the output in $scriptoutput
+                # # $scriptoutput = `$script particle=$particle frequency=$calc_frequency charge=$calc_charge`;
+
+                # # initialize p to parse the script output                
+                # my $p = HTML::TokeParser->new(\$scriptoutput);
+                # # print $!, "\n";
+                # # get the table header <th> tags
+                # # print $scriptoutput, "\n"; 
+                # while (my $token = $p->get_tag("td")) {
+                #     if(defined($token->[1]{id})) {
+                #         if($token->[1]{id} =~ /energy/) {
+                #             $calc_energy = $p->get_trimmed_text("/a");
+                #         }
+                #     }
+                # }
+
+                # # Since there are 500 frequencies to check per page of output,
+                # # calling the CGI script would take excessively long.  Instead, we
+                # # will test by comparing the energy calculated by findenergy with
+                # # the corresponding NMR value.
                 $calc_energy = ($M_zero / 2) * ( - $mass + sqrt($mass**2 + (4*$magnet_k*$calc_charge**2*$calc_frequency**2)/($M_zero)));
                 $rounded_energy = sprintf("%.3f", $calc_energy);
                 # print $table_energy, "\n";
